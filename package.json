@@ -1,0 +1,16 @@
+{
+  "name": "contract-reader",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Paste a contract or Terms of Service to get clause-by-clause risk flags, readability scores, plain-English rewrites and Q&A with citations.",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "node tests/run-node.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dguywhoknows/contract-reader.git"
+  },
+  "homepage": "https://dguywhoknows.github.io/contract-reader/",
+  "license": "MIT"
+}
