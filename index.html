@@ -3,95 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Legalese Lens</title>
-<meta name="description" content="Paste a contract or Terms of Service: clause-by-clause risk flags, readability scores, plain-English rewrites and Q&A with citations.">
-<meta name="app-repo" content="https://github.com/dguywhoknows/contract-reader">
-<meta name="app-version" content="2.0.0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%238b5e34'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial%2CHelvetica%2Csans-serif' font-weight='700' font-size='13' fill='white'%3ELL%3C/text%3E%3C/svg%3E">
+<title>Legalese Lens: Know what you are agreeing to before you click accept</title>
+<meta name="description" content="Clause-by-clause risk flags, plain-English rewrites, key dates and amounts, and a side-by-side diff when the terms change.">
+<meta property="og:title" content="Legalese Lens">
+<meta property="og:description" content="Clause-by-clause risk flags, plain-English rewrites, key dates and amounts, and a side-by-side diff when the terms change.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%238b5e34'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='13' fill='white'%3ELL%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/base.css">
-<link rel="stylesheet" href="styles/app.css">
+<link rel="stylesheet" href="styles/landing.css">
+<style>:root { --accent: #8b5e34; }</style>
 </head>
-<body>
-<header class="topbar">
-  <div class="brand"><span class="logo" aria-hidden="true">LL</span><div><h1>Legalese Lens</h1><p>Know what you're agreeing to before you click "I agree".</p></div></div>
-  <nav class="topnav" data-nav aria-label="Pages"></nav>
-  <div class="top-actions"><a class="btn ghost sm" href="https://github.com/dguywhoknows/contract-reader" target="_blank" rel="noopener">GitHub</a><span data-ai-badge></span></div>
+<body class="landing">
+<header class="l-nav">
+  <a class="l-brand" href="#top"><span class="logo">LL</span><b>Legalese Lens</b></a>
+  <nav aria-label="Sections"><a href="#demo">Demo</a><a href="#ask">Ask it</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav>
+  <div class="l-nav-cta"><a class="btn primary" href="app.html">Open the app</a></div>
 </header>
-<div class="page active" data-page="review" data-title="Review">
-<main class="stack">
-  <div class="disclaimer small">Educational tool, not legal advice. For anything important, talk to a qualified lawyer.</div>
-  <div class="grid side">
-    <section class="stack">
-      <div class="card stack">
-        <div class="row between"><h2 style="margin:0">Document</h2><div class="row"><button class="btn sm ghost" id="sampleBtn">Sample terms</button><label class="btn sm">Open .txt<input type="file" id="file" accept=".txt,.md" hidden></label></div></div>
-        <textarea id="doc" spellcheck="false"></textarea>
-        <div class="row"><input class="input grow" id="docName" placeholder="Name this document" aria-label="Document name"><button class="btn primary" id="scan">Analyze and save</button></div>
-      </div>
-      <div class="card"><h2>Risk radar</h2><div id="risks"></div></div>
-      <div class="card"><h2>Readability by clause</h2><div id="read"></div></div>
-    </section>
-    <section class="stack">
-      <div class="kpis" id="tiles"></div>
-      <div class="card">
-        <div class="row between"><h2 style="margin:0">Plain-English summary</h2><button class="btn" id="sumBtn">Summarize</button></div>
-        <div id="summary" style="margin-top:10px"><p class="small muted">The AI reads the whole document plus the local risk flags.</p></div>
-      </div>
-      <div class="card">
-        <h2>Ask the document</h2>
-        <div class="row"><input class="input grow" id="q" placeholder="e.g. Can I cancel anytime? Do they sell my data?"><button class="btn primary" id="ask">Ask</button></div>
-        <div class="row" id="suggest" style="margin-top:8px"></div>
-        <div id="answer" style="margin-top:10px"></div>
-      </div>
-      <div class="card"><div class="row between"><h2 style="margin:0">Clauses</h2><select id="filter" style="width:auto"><option value="">All clauses</option><option value="risk">Only flagged</option></select></div><div id="clauses"></div></div>
-    </section>
-  </div>
-</main>
-</div>
-<div class="page" data-page="terms" data-title="Key terms">
-<main class="stack">
-  <div class="disclaimer small">Extracted automatically from the text. Always read the clause itself.</div>
-  <div class="grid cols-3">
-    <div class="card"><h2>Money</h2><div id="tMoney"></div></div>
-    <div class="card"><h2>Deadlines and periods</h2><div id="tDur"></div></div>
-    <div class="card"><h2>Dates and defined terms</h2><div id="tDates"></div></div>
-  </div>
-  <div class="grid cols-2">
-    <div class="card"><h2>What you must do</h2><div id="tYou"></div></div>
-    <div class="card"><h2>What they may do</h2><div id="tThem"></div></div>
-  </div>
-</main>
-</div>
 
-<div class="page" data-page="compare" data-title="Compare">
-<main class="stack">
-  <div class="card row"><select id="cmpA" style="width:auto" aria-label="Old version"></select><span class="muted">→</span><select id="cmpB" style="width:auto" aria-label="New version"></select><button class="btn ghost" id="cmpSample">Load a revised sample</button><label class="chk small"><input type="checkbox" id="cmpSame"> Show unchanged clauses</label></div>
-  <div class="kpis" id="cmpTiles"></div>
-  <div id="cmpList" class="stack"></div>
-</main>
-</div>
+<main id="top">
+  <section class="l-hero">
+    <p class="l-kicker">Free · runs in your browser · AI built in</p>
+    <h1>Know what you are agreeing to before you click accept.</h1>
+    <p class="l-sub">Clause-by-clause risk flags, plain-English rewrites, key dates and amounts, and a side-by-side diff when the terms change.</p>
+    <div class="l-actions"><a class="btn primary big" href="app.html">Open the app</a><a class="btn big" href="#demo">See it working</a></div>
+  </section>
 
-<div class="page" data-page="checklist" data-title="Checklist">
-<main class="stack" style="max-width:900px">
-  <div class="card row"><span>Contract type</span><select id="ckType" style="width:auto" aria-label="Contract type"></select><span class="small muted">Checks whether the document addresses each question. Not legal advice.</span></div>
-  <div id="ckList" class="stack"></div>
-</main>
-</div>
+  <section class="l-demo reveal" id="demo">
+    <div class="l-window"><div class="l-window-bar"><i></i><i></i><i></i><span>Legalese Lens</span></div>
+      <iframe src="app.html?embed=1" title="Legalese Lens live demo" loading="lazy"></iframe></div>
+    <p class="l-caption">This is the real app running below, not a recording. Try it.</p>
+  </section>
 
-<div class="page" data-page="library" data-title="Library">
-<main class="stack">
-  <div class="page-head"><div><h2>Documents</h2><p id="libSummary"></p></div></div>
-  <div class="grid cols-3" id="libList"></div>
-</main>
-</div>
+  <section class="l-section reveal" id="ask">
+    <div class="l-head"><p class="l-kicker">Just say what you want</p><h2>Tell it in plain words. It uses its own tools to do it.</h2>
+      <p>Open the AI box in the app, type a request, and the AI drives the app's real features for you: it sets things up, edits, runs and reports back. Standing instructions let you shape every AI feature to how you like to work.</p></div>
+    <div class="l-prompts"><div class="l-prompt"><div class="say">Can I cancel anytime, and is there a fee?</div><div class="does">Finds the right clauses and answers with citations.</div></div><div class="l-prompt"><div class="say">What changed in the new version?</div><div class="does">Compares the two versions and summarizes the risk changes.</div></div><div class="l-prompt"><div class="say">Is this lease missing anything important?</div><div class="does">Runs the lease checklist and lists the gaps.</div></div></div>
+  </section>
 
-<div class="page" data-page="settings" data-title="Settings"></div>
-<script src="src/lib/dom.js"></script>
-<script src="src/lib/ai.js"></script>
-<script src="src/lib/router.js"></script>
-<script src="src/core.js"></script>
-<script src="src/demo.js"></script>
-<script src="src/app.js"></script>
+  <section class="l-section reveal" id="features">
+    <div class="l-head"><p class="l-kicker">What it does</p><h2>Everything in one place</h2></div>
+    <div class="l-grid"><div class="l-card"><h3>Clause segmentation</h3><p>Clause segmentation for numbered, article-style and ALL-CAPS headed documents</p></div><div class="l-card"><h3>14-pattern risk library</h3><p>14-pattern risk library with severity, explanation and in-text highlighting</p></div><div class="l-card"><h3>Per-clause readability</h3><p>Flesch-Kincaid grade, longest sentence, legalese terms, passive voice</p></div><div class="l-card"><h3>Risk radar</h3><p>Risk radar + readability bars that jump to the clause</p></div><div class="l-card"><h3>AI plain-English rewrites per clause</h3><p>AI plain-English rewrites per clause (grade-7 target)</p></div><div class="l-card"><h3>AI summary with §-citations</h3><p>TL;DR, what you agree to, red flags, questions to ask</p></div><div class="l-card"><h3>Retrieval-augmented Q&amp;A</h3><p>Local TF-IDF cosine picks the clauses, AI answers with citations</p></div><div class="l-card"><h3>Key terms page</h3><p>Money amounts, deadlines and notice periods (with context), dates, defined terms, what you must do and what the other side may do, each linked to its clause</p></div><div class="l-card"><h3>Compare page</h3><p>Align two versions of a contract by title and content (even when clauses are renumbered), show word-level changes, and list risk flags that were added or removed</p></div></div>
+  </section>
+
+  <section class="l-section reveal">
+    <div class="l-head"><p class="l-kicker">How it works</p><h2>Real engines where it counts, AI where it helps</h2></div>
+    <div class="l-steps">
+      <div><span>1</span><h3>Open the app</h3><p>No sign-up needed right now. Everything runs in your browser.</p></div>
+      <div><span>2</span><h3>Ask in your own words</h3><p>Type or click. The AI handles clause simplification; cited contract summary (JSON) that verifies local flags; rAG question answering over the top-k retrieved clauses.</p></div>
+      <div><span>3</span><h3>Keep what you make</h3><p>Your work is saved in your browser and can be exported any time.</p></div>
+    </div>
+    <p class="l-note">Computed locally, with no AI involved: segmentation, risk detection, readability metrics, retrieval, highlighting.</p>
+  </section>
+
+  <section class="l-section reveal" id="faq">
+    <div class="l-head"><p class="l-kicker">Questions</p><h2>Good to know</h2></div>
+    <div class="l-faq">
+      <details><summary>Is it free?</summary><p>Yes. Every feature is free. </p></details>
+      <details><summary>Where is my data stored?</summary><p>What you create stays in this browser on this device. You can export a backup or delete everything from Settings.</p></details>
+      <details><summary>Do I need an API key?</summary><p>Not to try it: the app runs in demo mode with sample AI output. For live AI, connect a free Groq or OpenRouter key in Settings.</p></details>
+      <details><summary>What can I type into the AI box?</summary><p>Anything you would ask a helpful colleague who knows the app, such as: "Can I cancel anytime, and is there a fee?". It plans the steps, runs the app's own functions and tells you what it did. The Instructions tab saves preferences every AI feature follows.</p></details>
+      <details><summary>Can I see the code?</summary><p>Yes. It is open source under the MIT license on <a href="https://github.com/dguywhoknows/contract-reader" rel="noopener">GitHub</a>, with a <a href="tests/">public test suite</a>.</p></details>
+    </div>
+  </section>
+
+  <section class="l-final reveal">
+    <h2>Know what you are agreeing to before you click accept.</h2>
+    <a class="btn primary big" href="app.html">Open the app</a>
+  </section>
+</main>
+
+<footer class="l-foot"><span>Legalese Lens</span><span><a href="https://github.com/dguywhoknows/contract-reader" rel="noopener">Source</a> · <a href="tests/">Tests</a> · MIT license</span></footer>
+<script>
+document.querySelectorAll('.reveal').forEach((el) => el.classList.add('pre'));
+const io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.remove('pre'); io.unobserve(x.target); } }), { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
 </body>
 </html>
