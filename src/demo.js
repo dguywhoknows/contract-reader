@@ -1,4 +1,4 @@
-/* demo.js — a fictional terms of service, a revised version for the Compare page, and offline summary text. */
+/* A fictional terms of service, a revised version for the Compare page, and offline summary text. */
 var SAMPLE_TOS = `CLOUDNEST TERMS OF SERVICE
 Last updated: March 1, 2026
 

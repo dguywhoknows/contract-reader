@@ -1,4 +1,4 @@
-/* core.js — clause segmentation, risk patterns, readability, retrieval, key-term extraction, version comparison and coverage checklists (pure, unit-tested). Educational, not legal advice. */
+/* Clause segmentation, risk patterns, readability, retrieval, key-term extraction, version comparison and coverage checklists (pure, unit-tested). Educational, not legal advice. */
 
 var RISKS = [
   { id: 'autorenew', sev: 'high', label: 'Automatic renewal', re: /\b(automatically renew\w*|auto-?renew\w*|renews? automatically|continuous subscription)\b/i, why: 'You will keep being charged unless you cancel in time.' },
